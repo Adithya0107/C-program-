@@ -1,0 +1,67 @@
+#include <stdio.h>
+
+#define N 4 // Size of the maze
+
+// Function to print the solution matrix
+void printSolution(int maze[N][N]) {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            printf("%d ", maze[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+// Function to check if the given cell is valid to move
+int isSafe(int maze[N][N], int x, int y) {
+    return (x >= 0 && y >= 0 && x < N && y < N && maze[x][y] == 1);
+}
+
+// Recursive function to solve the maze
+int solveMaze(int maze[N][N], int x, int y, int sol[N][N]) {
+    // If the rat reaches the destination
+    if (x == N - 1 && y == N - 1) {
+        sol[x][y] = 1;
+        return 1;
+    }
+
+    // Check if the current cell is valid
+    if (isSafe(maze, x, y)) {
+        // Mark the current cell as part of the solution path
+        sol[x][y] = 1;
+
+        // Move right
+        if (solveMaze(maze, x + 1, y, sol))
+            return 1;
+
+        // Move down
+        if (solveMaze(maze, x, y + 1, sol))
+            return 1;
+
+        // If no move is valid, backtrack
+        sol[x][y] = 0;
+        return 0;
+    }
+
+    return 0;
+}
+
+int main() {
+    int maze[N][N] = {
+        {1, 0, 0, 0},
+        {1, 1, 0, 1},
+        {0, 1, 0, 0},
+        {1, 1, 1, 1}
+    };
+
+    int sol[N][N] = {0}; // Initialize the solution matrix
+
+    if (solveMaze(maze, 0, 0, sol)) {
+        printf("Solution path:\n");
+        printSolution(sol);
+    } else {
+        printf("No solution exists.");
+    }
+
+    return 0;
+}
