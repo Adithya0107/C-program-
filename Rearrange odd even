@@ -1,0 +1,44 @@
+#include <stdio.h>
+
+void rearrangeEvenOdd(int arr[], int size) {
+    int evenPos = 0;
+    int oddPos = size - 1;
+
+    while (evenPos < oddPos) {
+        // Find the next even number from the left
+        while (arr[evenPos] % 2 == 0 && evenPos < oddPos)
+            evenPos++;
+
+        // Find the next odd number from the right
+        while (arr[oddPos] % 2 != 0 && evenPos < oddPos)
+            oddPos--;
+
+        // Swap even and odd elements
+        if (evenPos < oddPos) {
+            int temp = arr[evenPos];
+            arr[evenPos] = arr[oddPos];
+            arr[oddPos] = temp;
+            evenPos++;
+            oddPos--;
+        }
+    }
+}
+
+int main() {
+    int arr[] = {12, 34, 45, 9, 8, 90, 3};
+    int size = sizeof(arr) / sizeof(arr[0]);
+
+    printf("Original Array: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+
+    rearrangeEvenOdd(arr, size);
+
+    printf("\nArray after rearranging even and odd elements: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+
+    return 0;
+}
